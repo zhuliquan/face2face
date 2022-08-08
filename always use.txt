@@ -1,0 +1,10 @@
+﻿改变图像的大小
+python ./train/tools/process.py --input_dir photos/original --operation resize --output_dir photos/original_resized
+将图像进行合并
+python ./train/tools/process.py --input_dir photos/landmarks_resized --b_dir photos/original_resized --operation combine --output_dir photos/combined
+进行训练
+python ./train/pix2pix.py --mode train --output_dir face2face-model --max_epochs 200 --input_dir photos/combined/train --which_direction AtoB --checkpoint face2face-model --batch_size 2
+reduce模型
+python ./train/reduce_model.py --model-input face2face-model --model-output face2face-reduced-model --batch-size 1
+frozen模型
+python ./train/freeze_model.py --model-folder face2face-reduced-model
